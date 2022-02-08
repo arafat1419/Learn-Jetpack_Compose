@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Simple Text Compose App</string>
+    <string name="title_activity_core_ui">CoreUI</string>
+    <string name="title_activity_dynamic_content">DynamicContent</string>
+    <string name="title_activity_lift_up_state">LiftUpState</string>
+    <string name="title_activity_profile_card">ProfileCard</string>
+</resources>

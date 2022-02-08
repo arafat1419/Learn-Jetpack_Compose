@@ -34,13 +34,17 @@ class ProfileCard : ComponentActivity() {
 }
 
 @Composable
-fun MainnScren() {
+fun MainnScren(users: List<UserProfile> = userProfileList) {
     Scaffold(topBar = { AppBar() }) {
         Surface(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            ProfileCards()
+            Column() {
+                users.forEach {
+                    ProfileCards(userProfile = it)
+                }
+            }
         }
     }
 }
@@ -62,10 +66,10 @@ fun AppBar() {
 }
 
 @Composable
-fun ProfileCards() {
+fun ProfileCards(userProfile: UserProfile) {
     Card(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth()
             .wrapContentHeight(align = Alignment.Top),
         elevation = 8.dp,
@@ -77,23 +81,26 @@ fun ProfileCards() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            ProfilePicture()
-            ProfileContent()
+            ProfilePicture(userProfile.photo, userProfile.status)
+            ProfileContent(userProfile.name, userProfile.status)
         }
     }
 }
 
 @Composable
-fun ProfilePicture() {
+fun ProfilePicture(picture: Int, status: Boolean) {
     Card(
         shape = CircleShape,
-        border = BorderStroke(width = 2.dp, color = MaterialTheme.colors.lightGreen),
+        border = BorderStroke(
+            width = 2.dp,
+            color = if (status) MaterialTheme.colors.lightGreen else Color.Red
+        ),
         modifier = Modifier
             .padding(16.dp),
         elevation = 4.dp
     ) {
         Image(
-            painter = painterResource(id = R.drawable.fotoku),
+            painter = painterResource(id = picture),
             contentDescription = "Profile Picture",
             modifier = Modifier
                 .size(72.dp),
@@ -104,19 +111,24 @@ fun ProfilePicture() {
 }
 
 @Composable
-fun ProfileContent() {
+fun ProfileContent(name: String, status: Boolean) {
     Column(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Text(
-            text = "Arafat Maku",
-            style = MaterialTheme.typography.h5
-        )
+        CompositionLocalProvider(LocalContentAlpha provides (
+                if (status) 1f else ContentAlpha.medium
+                )) {
+            Text(
+                text = name,
+                style = MaterialTheme.typography.h5
+            )
+        }
+
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                text = "Active now",
+                text = if (status) "Active now" else "Offline",
                 style = MaterialTheme.typography.body2
             )
         }

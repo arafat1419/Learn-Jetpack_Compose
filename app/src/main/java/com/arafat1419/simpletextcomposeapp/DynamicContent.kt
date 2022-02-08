@@ -39,7 +39,7 @@ class DynamicContent : ComponentActivity() {
 @Composable
 fun MainScreenn() {
     val greetingListState = remember {
-        mutableStateListOf("Arafat", "Shelsi")
+        mutableStateListOf("Arafat", "Maku")
     }
     val newNameStateContent = remember {
         mutableStateOf("")

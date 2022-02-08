@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,6 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.arafat1419.simpletextcomposeapp.ui.theme.SimpleTextComposeAppTheme
 import com.arafat1419.simpletextcomposeapp.ui.theme.lightGreen
 
@@ -40,9 +44,9 @@ fun MainnScren(users: List<UserProfile> = userProfileList) {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Column() {
-                users.forEach {
-                    ProfileCards(userProfile = it)
+            LazyColumn {
+                items(users) { userProfile ->
+                    ProfileCards(userProfile = userProfile)
                 }
             }
         }
@@ -88,7 +92,7 @@ fun ProfileCards(userProfile: UserProfile) {
 }
 
 @Composable
-fun ProfilePicture(picture: Int, status: Boolean) {
+fun ProfilePicture(picture: String, status: Boolean) {
     Card(
         shape = CircleShape,
         border = BorderStroke(
@@ -100,12 +104,23 @@ fun ProfilePicture(picture: Int, status: Boolean) {
         elevation = 4.dp
     ) {
         Image(
+            painter = rememberImagePainter(
+                data = picture,
+                builder = {
+                    transformations(CircleCropTransformation())
+                }
+            ),
+            contentDescription = "Profile Picture",
+            modifier = Modifier
+                .size(72.dp)
+        )
+        /*Image(
             painter = painterResource(id = picture),
             contentDescription = "Profile Picture",
             modifier = Modifier
                 .size(72.dp),
             contentScale = ContentScale.Crop
-        )
+        )*/
     }
 
 }
